@@ -20,7 +20,7 @@ def retrieving_nasdaq_information():
         list_of_tickers = [line.rstrip('\n') for line in file]
         print(Fore.GREEN + "Pulled Ticker Symbols ✓")
 
-        print(Fore.GREEN + "Uploading Data to a CSV File..........")
+        print(Fore.GREEN + "Uploading Data to a CSV File.........." + Fore.LIGHTWHITE_EX)
         stock_symbol_data = yf.download(tickers=list_of_tickers, period='1y', interval='1d')['Close']
         df = stock_symbol_data.T
 
