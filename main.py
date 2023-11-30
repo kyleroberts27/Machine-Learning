@@ -46,9 +46,9 @@ def kmeans_clustering():
 
     PC_df = pd.DataFrame(PCs, index=dataset.index[:])
     PC_df.to_csv("PCAReduction.csv", mode='w')
-    print(PC_df)
+    print(Fore.LIGHTWHITE_EX + f'{PC_df}')
 
-    print("PCA Reduction Complete ✓")
+    print(Fore.GREEN + "PCA Reduction Complete ✓")
 
     # Kmeans Cluster
     kmeans = KMeans(n_clusters=4, init='k-means++', random_state=42)
