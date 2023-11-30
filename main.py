@@ -48,11 +48,15 @@ def kmeans_clustering():
     PC_df.to_csv("PCAReduction.csv", mode='w')
     print(PC_df)
 
+    print("PCA Reduction Complete ✓")
+
     # Kmeans Cluster
     kmeans = KMeans(n_clusters=4, init='k-means++', random_state=42)
     kmeans.fit(PC_df)
     kmeans.predict(PC_df)
     labels = kmeans.labels_
+
+    print("Kmeans Clustering Complete ✓")
 
     # Getting ticker symbols in their cluster
     cluster0 = []
@@ -87,6 +91,8 @@ def kmeans_clustering():
     print(Fore.MAGENTA + f"\nCluster 4:")
     for tickers in cluster3:
         print(f'{tickers}')
+
+    print(Fore.GREEN + f"\nTicker Clusters Shown ✓")
 
 
 # Press the green button in the gutter to run the script.
