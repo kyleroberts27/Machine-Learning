@@ -14,6 +14,7 @@ import seaborn as sns
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
+
 def retrieving_nasdaq_information():
     with open("nasdaq_100_tickerslist.txt") as file:
         list_of_tickers = [line.rstrip('\n') for line in file]
@@ -71,7 +72,7 @@ def kmeans_clustering():
             cluster3.append(ticker_symbol)
 
     print('Clusters Below:')
-    print(Fore.LIGHTWHITE_EX + f"\nCluster 1:")
+    print(Fore.LIGHTWHITE_EX + f"Cluster 1:")
     for tickers in cluster0:
         print(f'{tickers}')
 
