@@ -134,10 +134,13 @@ def sbux_correlated_stocks():
 
     # printing result
     print(Fore.LIGHTWHITE_EX + f"The top 10 positively correlated stocks for SBUX:")
+
+    counter = 1
+    
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_largest.items():
-        print(key, ":", value)
-
+        print(f"{counter}. {key}: {value}")
+        counter +=1
     print("\n")
 
     # Initialize small and sets it to 10
@@ -150,10 +153,12 @@ def sbux_correlated_stocks():
     # printing result
     print("The top 10 negatively correlated stocks for SBUX:")
 
+    counter = 1
+
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_smallest.items():
-        print(key, ":", value)
-
+        print(f"{counter}. {key}: {value}")
+        counter +=1
     print("\n")
 
 
@@ -183,9 +188,13 @@ def meli_correlated_stocks():
 
     # printing result
     print("The top 10 positively correlated stocks for MELI:")
+
+    counter = 1
+
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_largest.items():
-        print(key, ":", value)
+        print(f"{counter}. {key}: {value}")
+        counter +=1
 
     print("\n")
 
@@ -198,9 +207,13 @@ def meli_correlated_stocks():
 
     # printing result
     print("The top 10 negatively correlated stocks for MELI:")
+
+    counter = 1
+
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_smallest.items():
-        print(key, ":", value)
+        print(f"{counter}. {key}: {value}")
+        counter +=1
 
     print("\n")
 
@@ -231,9 +244,13 @@ def bkng_correlated_stocks():
 
     # printing result
     print("The top 10 positively correlated stocks for BKNG:")
+
+    counter = 1
+
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_largest.items():
-        print(key, ":", value)
+        print(f"{counter}. {key}: {value}")
+        counter +=1
 
     print("\n")
 
@@ -246,10 +263,13 @@ def bkng_correlated_stocks():
 
     # printing result
     print("The top 10 negatively correlated stocks for BKNG:")
+
+    counter = 1
+
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_smallest.items():
-        print(key, ":", value)
-
+        print(f"{counter}. {key}: {value}")
+        counter +=1
     print("\n")
 
 
@@ -279,10 +299,12 @@ def ctas_correlated_stocks():
 
     # printing result
     print("The top 10 positively correlated stocks for CTAS:")
+    counter = 1
 
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_largest.items():
-        print(key, ":", value)
+        print(f"{counter}. {key}: {value}")
+        counter +=1
 
     print("\n")
 
@@ -296,9 +318,12 @@ def ctas_correlated_stocks():
     # printing result
     print("The top 10 negatively correlated stocks for CTAS:")
 
+    counter = 1
+
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_smallest.items():
-        print(key, ":", value)
+        print(f"{counter}. {key}: {value}")
+        counter +=1
 
     print("\n")
 
@@ -312,7 +337,7 @@ def ctas_correlated_stocks():
 if __name__ == '__main__':
     #retrieving_nasdaq_information()
     #kmeans_clustering()
-    stock_correlation()
+    #stock_correlation()
     sbux_correlated_stocks()
     meli_correlated_stocks()
     bkng_correlated_stocks()
