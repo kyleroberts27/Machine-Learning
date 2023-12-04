@@ -10,9 +10,12 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 import seaborn as sns
+from operator import itemgetter
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+
+chosen_symbol_list = ['SBUX', 'MELI', 'BKNG', 'CTAS']
 
 
 def retrieving_nasdaq_information():
@@ -23,9 +26,11 @@ def retrieving_nasdaq_information():
         print(Fore.GREEN + "Uploading Data to a CSV File.........." + Fore.LIGHTWHITE_EX)
         stock_symbol_data = yf.download(tickers=list_of_tickers, period='1y', interval='1d')['Close']
         df = stock_symbol_data.T
+        df2 = stock_symbol_data
 
         # Saving to a csv, overwrites the file each time
         df.to_csv("nasdaq_data.csv", mode='w')
+        df2.to_csv("nasdaq_data_original.csv", mode='w')
         print(Fore.GREEN + "Uploaded Data To nasdaq_data CSV ✓")
 
 
@@ -95,9 +100,222 @@ def kmeans_clustering():
     print(Fore.GREEN + f"\nTicker Clusters Shown ✓")
 
 
+def stock_correlation():
+    total_cols = 100
+    df = pd.read_csv("nasdaq_data_original.csv", usecols=range(1, total_cols))
+    correlation = df.corr()
+    correlation.to_csv("correlation.csv", mode='w')
+    print(Fore.GREEN + f"Stock Correlation Complete ✓\n")
+
+
+def sbux_correlated_stocks():
+    # Getting data
+    df = pd.read_csv("correlation.csv")
+    row1 = df.iloc[0:, 0].tolist()
+    row2 = df['SBUX'].tolist()
+
+    # Putting data into a dictionary
+    ticker_dictionary = {}
+    for key in row1:
+        for value in row2:
+            ticker_dictionary[key] = value
+            row2.remove(value)
+            break
+
+    # Initialize large and sets it to 11
+    large = 11
+
+    # 11 largest values in dictionary
+    # Using sorted() + itemgetter() + items()
+    result_values_largest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=True)[:large])
+
+    # Removes the own stock from the dictionary as it is the most correlated
+    del result_values_largest['SBUX']
+
+    # printing result
+    print(Fore.LIGHTWHITE_EX + f"The top 10 positively correlated stocks for SBUX:")
+    # Printing a dictionary using a loop and the items() method
+    for key, value in result_values_largest.items():
+        print(key, ":", value)
+
+    print("\n")
+
+    # Initialize small and sets it to 10
+    small = 10
+
+    # 10 smallest values in dictionary
+    # Using sorted() + itemgetter() + items()
+    result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:small])
+
+    # printing result
+    print("The top 10 negatively correlated stocks for SBUX:")
+
+    # Printing a dictionary using a loop and the items() method
+    for key, value in result_values_smallest.items():
+        print(key, ":", value)
+
+    print("\n")
+
+
+def meli_correlated_stocks():
+    # Getting data
+    df = pd.read_csv("correlation.csv")
+    row1 = df.iloc[0:, 0].tolist()
+    row2 = df['MELI'].tolist()
+
+    # Putting data into a dictionary
+    ticker_dictionary = {}
+    for key in row1:
+        for value in row2:
+            ticker_dictionary[key] = value
+            row2.remove(value)
+            break
+
+    # Initialize large and sets it to 11
+    large = 11
+
+    # 11 largest values in dictionary
+    # Using sorted() + itemgetter() + items()
+    result_values_largest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=True)[:large])
+
+    # Removes the own stock from the dictionary as it is the most correlated
+    del result_values_largest['MELI']
+
+    # printing result
+    print("The top 10 positively correlated stocks for MELI:")
+    # Printing a dictionary using a loop and the items() method
+    for key, value in result_values_largest.items():
+        print(key, ":", value)
+
+    print("\n")
+
+    # Initialize small and sets it to 10
+    small = 10
+
+    # 10 smallest values in dictionary
+    # Using sorted() + itemgetter() + items()
+    result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:small])
+
+    # printing result
+    print("The top 10 negatively correlated stocks for MELI:")
+    # Printing a dictionary using a loop and the items() method
+    for key, value in result_values_smallest.items():
+        print(key, ":", value)
+
+    print("\n")
+
+
+def bkng_correlated_stocks():
+    # Getting data
+    df = pd.read_csv("correlation.csv")
+    row1 = df.iloc[0:, 0].tolist()
+    row2 = df['BKNG'].tolist()
+
+    # Putting data into a dictionary
+    ticker_dictionary = {}
+    for key in row1:
+        for value in row2:
+            ticker_dictionary[key] = value
+            row2.remove(value)
+            break
+
+    # Initialize large and sets it to 11
+    large = 11
+
+    # 11 largest values in dictionary
+    # Using sorted() + itemgetter() + items()
+    result_values_largest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=True)[:large])
+
+    # Removes the own stock from the dictionary as it is the most correlated
+    del result_values_largest['BKNG']
+
+    # printing result
+    print("The top 10 positively correlated stocks for BKNG:")
+    # Printing a dictionary using a loop and the items() method
+    for key, value in result_values_largest.items():
+        print(key, ":", value)
+
+    print("\n")
+
+    # # Initialize small and sets it to 10
+    small = 10
+
+    # 10 smallest values in dictionary
+    # Using sorted() + itemgetter() + items()
+    result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:small])
+
+    # printing result
+    print("The top 10 negatively correlated stocks for BKNG:")
+    # Printing a dictionary using a loop and the items() method
+    for key, value in result_values_smallest.items():
+        print(key, ":", value)
+
+    print("\n")
+
+
+def ctas_correlated_stocks():
+    # Getting data
+    df = pd.read_csv("correlation.csv")
+    row1 = df.iloc[0:, 0].tolist()
+    row2 = df['CTAS'].tolist()
+
+    # Putting data into a dictionary
+    ticker_dictionary = {}
+    for key in row1:
+        for value in row2:
+            ticker_dictionary[key] = value
+            row2.remove(value)
+            break
+
+    # Initialize large and sets it to 11
+    large = 11
+
+    # 11 largest values in dictionary
+    # Using sorted() + itemgetter() + items()
+    result_values_largest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=True)[:large])
+
+    # Removes the own stock from the dictionary as it is the most correlated
+    del result_values_largest['CTAS']
+
+    # printing result
+    print("The top 10 positively correlated stocks for CTAS:")
+
+    # Printing a dictionary using a loop and the items() method
+    for key, value in result_values_largest.items():
+        print(key, ":", value)
+
+    print("\n")
+
+    # # Initialize small and sets it to 10
+    small = 10
+
+    # 10 smallest values in dictionary
+    # Using sorted() + itemgetter() + items()
+    result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:small])
+
+    # printing result
+    print("The top 10 negatively correlated stocks for CTAS:")
+
+    # Printing a dictionary using a loop and the items() method
+    for key, value in result_values_smallest.items():
+        print(key, ":", value)
+
+    print("\n")
+
+# Get the list of all tickers
+# Get list of 4 chosen stocks
+# Get correlation of all stocks compared to each other
+# Compare the 4 stocks to the most postive and negatively correlated stocks
+
+
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    retrieving_nasdaq_information()
-    kmeans_clustering()
+    #retrieving_nasdaq_information()
+    #kmeans_clustering()
+    stock_correlation()
+    sbux_correlated_stocks()
+    meli_correlated_stocks()
+    bkng_correlated_stocks()
+    ctas_correlated_stocks()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
