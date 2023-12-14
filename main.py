@@ -331,7 +331,6 @@ def ctas_correlated_stocks():
 
 def sbux_EDAanalysis_stocks():
     df = pd.read_csv('nasdaq_data_original.csv')
-    df.head()
 
     # Line chart of closing stock price for a specific company over time
     company_name = 'SBUX'
@@ -349,7 +348,6 @@ def sbux_EDAanalysis_stocks():
 
 def meli_EDAanalysis_stocks():
     df = pd.read_csv('nasdaq_data_original.csv')
-    df.head()
 
     # Line chart of closing stock price for a specific company over time
     company_name = 'MELI'
@@ -367,7 +365,6 @@ def meli_EDAanalysis_stocks():
 
 def bkng_EDAanalysis_stocks():
     df = pd.read_csv('nasdaq_data_original.csv')
-    df.head()
 
     # Line chart of closing stock price for a specific company over time
     company_name = 'BKNG'
@@ -385,14 +382,13 @@ def bkng_EDAanalysis_stocks():
 
 def ctas_EDAanalysis_stocks():
     df = pd.read_csv('nasdaq_data_original.csv')
-    df.head()
 
     # Line chart of closing stock price for a specific company over time
     company_name = 'CTAS'
     x_data = df.iloc[:, 0]
     y_data = df[company_name]
     plt.figure(figsize=(10, 6))
-    sns.lineplot(x=x_data, y=y_data, data=df, color='yellow')
+    sns.lineplot(x=x_data, y=y_data, data=df, color='orange')
     plt.title(f'Closing Stock Price of {company_name} Over Time')
     plt.xlabel('Date')
     plt.xticks(x_data, rotation='vertical')
