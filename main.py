@@ -11,6 +11,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 import seaborn as sns
 from operator import itemgetter
+import plotly.express as px
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -327,10 +328,78 @@ def ctas_correlated_stocks():
 
     print("\n")
 
-# Get the list of all tickers
-# Get list of 4 chosen stocks
-# Get correlation of all stocks compared to each other
-# Compare the 4 stocks to the most postive and negatively correlated stocks
+
+def sbux_EDAanalysis_stocks():
+    df = pd.read_csv('nasdaq_data_original.csv')
+    df.head()
+
+    # Line chart of closing stock price for a specific company over time
+    company_name = 'SBUX'
+    x_data = df.iloc[:, 0]
+    y_data = df[company_name]
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(x=x_data, y=y_data, data=df, color='blue')
+    plt.title(f'Closing Stock Price of {company_name} Over Time')
+    plt.xlabel('Date')
+    plt.xticks(x_data, rotation='vertical')
+    plt.ylabel('Closing Stock Price')
+
+    # Setting the number of ticks
+    plt.locator_params(axis='x', nbins=24)
+
+def meli_EDAanalysis_stocks():
+    df = pd.read_csv('nasdaq_data_original.csv')
+    df.head()
+
+    # Line chart of closing stock price for a specific company over time
+    company_name = 'MELI'
+    x_data = df.iloc[:, 0]
+    y_data = df[company_name]
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(x=x_data, y=y_data, data=df, color='red')
+    plt.title(f'Closing Stock Price of {company_name} Over Time')
+    plt.xlabel('Date')
+    plt.xticks(x_data, rotation='vertical')
+    plt.ylabel('Closing Stock Price')
+
+    # Setting the number of ticks
+    plt.locator_params(axis='x', nbins=24)
+
+def bkng_EDAanalysis_stocks():
+    df = pd.read_csv('nasdaq_data_original.csv')
+    df.head()
+
+    # Line chart of closing stock price for a specific company over time
+    company_name = 'BKNG'
+    x_data = df.iloc[:, 0]
+    y_data = df[company_name]
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(x=x_data, y=y_data, data=df, color='green')
+    plt.title(f'Closing Stock Price of {company_name} Over Time')
+    plt.xlabel('Date')
+    plt.xticks(x_data, rotation='vertical')
+    plt.ylabel('Closing Stock Price')
+
+    # Setting the number of ticks
+    plt.locator_params(axis='x', nbins=24)
+
+def ctas_EDAanalysis_stocks():
+    df = pd.read_csv('nasdaq_data_original.csv')
+    df.head()
+
+    # Line chart of closing stock price for a specific company over time
+    company_name = 'CTAS'
+    x_data = df.iloc[:, 0]
+    y_data = df[company_name]
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(x=x_data, y=y_data, data=df, color='yellow')
+    plt.title(f'Closing Stock Price of {company_name} Over Time')
+    plt.xlabel('Date')
+    plt.xticks(x_data, rotation='vertical')
+    plt.ylabel('Closing Stock Price')
+
+    # Setting the number of ticks
+    plt.locator_params(axis='x', nbins=24)
 
 
 # Press the green button in the gutter to run the script.
