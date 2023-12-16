@@ -18,6 +18,9 @@ import plotly.express as px
 
 chosen_symbol_list = ['SBUX', 'MELI', 'BKNG', 'CTAS']
 
+correlated_stocks = pd.read_csv("correlation.csv")
+original_nasdaq_data = pd.read_csv("nasdaq_data_original.csv")
+
 
 def retrieving_nasdaq_information():
     with open("nasdaq_100_tickerslist.txt") as file:
@@ -109,13 +112,8 @@ def stock_correlation():
     print(Fore.GREEN + f"Stock Correlation Complete ✓\n")
 
 
-def sbux_correlated_stocks():
-    # Getting data
-    df = pd.read_csv("correlation.csv")
-    row1 = df.iloc[0:, 0].tolist()
-    row2 = df['SBUX'].tolist()
-
-    # Putting data into a dictionary
+def correlation_chosen_stocks(chosen_ticker, row1, row2):
+    # Putting the data into a dictionary
     ticker_dictionary = {}
     for key in row1:
         for value in row2:
@@ -123,44 +121,53 @@ def sbux_correlated_stocks():
             row2.remove(value)
             break
 
-    # Initialize large and sets it to 11
-    large = 11
+    # Initialize the largest_stocks and sets it to 11
+    largest_stocks = 11
 
-    # 11 largest values in dictionary
+    # Get the 11 largest values in dictionary
     # Using sorted() + itemgetter() + items()
-    result_values_largest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=True)[:large])
+    result_values_largest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=True)[:largest_stocks])
 
     # Removes the own stock from the dictionary as it is the most correlated
-    del result_values_largest['SBUX']
+    del result_values_largest[chosen_ticker]
 
-    # printing result
-    print(Fore.LIGHTWHITE_EX + f"The top 10 positively correlated stocks for SBUX:")
+    # Printing the result
+    print(Fore.LIGHTWHITE_EX + f"The top 10 positively correlated stocks for {chosen_ticker}:")
 
     counter = 1
-    
+
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_largest.items():
         print(f"{counter}. {key}: {value}")
-        counter +=1
+        counter += 1
     print("\n")
 
-    # Initialize small and sets it to 10
-    small = 10
+    # Initialize the smallest_stocks and sets it to 11
+    smallest_stocks = 10
 
-    # 10 smallest values in dictionary
+    # The 10 smallest values in dictionary
     # Using sorted() + itemgetter() + items()
-    result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:small])
+    result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:smallest_stocks])
 
-    # printing result
-    print("The top 10 negatively correlated stocks for SBUX:")
+    # Printing the result
+    print(f"The top 10 negatively correlated stocks for {chosen_ticker}:")
 
     counter = 1
 
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_smallest.items():
         print(f"{counter}. {key}: {value}")
-        counter +=1
+        counter += 1
     print("\n")
+
+
+def sbux_correlated_stocks():
+    # Getting data
+    row1 = correlated_stocks.iloc[0:, 0].tolist()
+    row2 = correlated_stocks['SBUX'].tolist()
+    chosen_ticker = chosen_symbol_list[0]
+
+    correlation_chosen_stocks(chosen_ticker, row1, row2)
 
 
 def meli_correlated_stocks():
@@ -168,55 +175,9 @@ def meli_correlated_stocks():
     df = pd.read_csv("correlation.csv")
     row1 = df.iloc[0:, 0].tolist()
     row2 = df['MELI'].tolist()
+    chosen_ticker = chosen_symbol_list[1]
 
-    # Putting data into a dictionary
-    ticker_dictionary = {}
-    for key in row1:
-        for value in row2:
-            ticker_dictionary[key] = value
-            row2.remove(value)
-            break
-
-    # Initialize large and sets it to 11
-    large = 11
-
-    # 11 largest values in dictionary
-    # Using sorted() + itemgetter() + items()
-    result_values_largest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=True)[:large])
-
-    # Removes the own stock from the dictionary as it is the most correlated
-    del result_values_largest['MELI']
-
-    # printing result
-    print("The top 10 positively correlated stocks for MELI:")
-
-    counter = 1
-
-    # Printing a dictionary using a loop and the items() method
-    for key, value in result_values_largest.items():
-        print(f"{counter}. {key}: {value}")
-        counter +=1
-
-    print("\n")
-
-    # Initialize small and sets it to 10
-    small = 10
-
-    # 10 smallest values in dictionary
-    # Using sorted() + itemgetter() + items()
-    result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:small])
-
-    # printing result
-    print("The top 10 negatively correlated stocks for MELI:")
-
-    counter = 1
-
-    # Printing a dictionary using a loop and the items() method
-    for key, value in result_values_smallest.items():
-        print(f"{counter}. {key}: {value}")
-        counter +=1
-
-    print("\n")
+    correlation_chosen_stocks(chosen_ticker, row1, row2)
 
 
 def bkng_correlated_stocks():
@@ -224,54 +185,9 @@ def bkng_correlated_stocks():
     df = pd.read_csv("correlation.csv")
     row1 = df.iloc[0:, 0].tolist()
     row2 = df['BKNG'].tolist()
+    chosen_ticker = chosen_symbol_list[2]
 
-    # Putting data into a dictionary
-    ticker_dictionary = {}
-    for key in row1:
-        for value in row2:
-            ticker_dictionary[key] = value
-            row2.remove(value)
-            break
-
-    # Initialize large and sets it to 11
-    large = 11
-
-    # 11 largest values in dictionary
-    # Using sorted() + itemgetter() + items()
-    result_values_largest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=True)[:large])
-
-    # Removes the own stock from the dictionary as it is the most correlated
-    del result_values_largest['BKNG']
-
-    # printing result
-    print("The top 10 positively correlated stocks for BKNG:")
-
-    counter = 1
-
-    # Printing a dictionary using a loop and the items() method
-    for key, value in result_values_largest.items():
-        print(f"{counter}. {key}: {value}")
-        counter +=1
-
-    print("\n")
-
-    # # Initialize small and sets it to 10
-    small = 10
-
-    # 10 smallest values in dictionary
-    # Using sorted() + itemgetter() + items()
-    result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:small])
-
-    # printing result
-    print("The top 10 negatively correlated stocks for BKNG:")
-
-    counter = 1
-
-    # Printing a dictionary using a loop and the items() method
-    for key, value in result_values_smallest.items():
-        print(f"{counter}. {key}: {value}")
-        counter +=1
-    print("\n")
+    correlation_chosen_stocks(chosen_ticker, row1, row2)
 
 
 def ctas_correlated_stocks():
@@ -279,66 +195,15 @@ def ctas_correlated_stocks():
     df = pd.read_csv("correlation.csv")
     row1 = df.iloc[0:, 0].tolist()
     row2 = df['CTAS'].tolist()
+    chosen_ticker = chosen_symbol_list[3]
 
-    # Putting data into a dictionary
-    ticker_dictionary = {}
-    for key in row1:
-        for value in row2:
-            ticker_dictionary[key] = value
-            row2.remove(value)
-            break
-
-    # Initialize large and sets it to 11
-    large = 11
-
-    # 11 largest values in dictionary
-    # Using sorted() + itemgetter() + items()
-    result_values_largest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=True)[:large])
-
-    # Removes the own stock from the dictionary as it is the most correlated
-    del result_values_largest['CTAS']
-
-    # printing result
-    print("The top 10 positively correlated stocks for CTAS:")
-    counter = 1
-
-    # Printing a dictionary using a loop and the items() method
-    for key, value in result_values_largest.items():
-        print(f"{counter}. {key}: {value}")
-        counter +=1
-
-    print("\n")
-
-    # # Initialize small and sets it to 10
-    small = 10
-
-    # 10 smallest values in dictionary
-    # Using sorted() + itemgetter() + items()
-    result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:small])
-
-    # printing result
-    print("The top 10 negatively correlated stocks for CTAS:")
-
-    counter = 1
-
-    # Printing a dictionary using a loop and the items() method
-    for key, value in result_values_smallest.items():
-        print(f"{counter}. {key}: {value}")
-        counter +=1
-
-    print("\n")
+    correlation_chosen_stocks(chosen_ticker, row1, row2)
 
 
-def sbux_EDAanalysis_stocks():
-    df = pd.read_csv('nasdaq_data_original.csv')
-
-    # Line chart of closing stock price for a specific company over time
-    company_name = 'SBUX'
-    x_data = df.iloc[:, 0]
-    y_data = df[company_name]
+def eda_analysis_stocks(chosen_ticker, x_data, y_data):
     plt.figure(figsize=(10, 6))
-    sns.lineplot(x=x_data, y=y_data, data=df, color='blue')
-    plt.title(f'Closing Stock Price of {company_name} Over Time')
+    sns.lineplot(x=x_data, y=y_data, data=original_nasdaq_data, color='blue')
+    plt.title(f'Closing Stock Price of {chosen_ticker} Over Time')
     plt.xlabel('Date')
     plt.xticks(x_data, rotation='vertical')
     plt.ylabel('Closing Stock Price')
@@ -346,56 +211,33 @@ def sbux_EDAanalysis_stocks():
     # Setting the number of ticks
     plt.locator_params(axis='x', nbins=24)
 
-def meli_EDAanalysis_stocks():
-    df = pd.read_csv('nasdaq_data_original.csv')
 
-    # Line chart of closing stock price for a specific company over time
-    company_name = 'MELI'
-    x_data = df.iloc[:, 0]
-    y_data = df[company_name]
-    plt.figure(figsize=(10, 6))
-    sns.lineplot(x=x_data, y=y_data, data=df, color='red')
-    plt.title(f'Closing Stock Price of {company_name} Over Time')
-    plt.xlabel('Date')
-    plt.xticks(x_data, rotation='vertical')
-    plt.ylabel('Closing Stock Price')
+def sbux_eda_analysis_stocks():
+    chosen_ticker = chosen_symbol_list[0]
+    x_data = original_nasdaq_data.iloc[:, 0]
+    y_data = original_nasdaq_data[chosen_ticker]
+    eda_analysis_stocks(chosen_ticker, x_data, y_data)
 
-    # Setting the number of ticks
-    plt.locator_params(axis='x', nbins=24)
 
-def bkng_EDAanalysis_stocks():
-    df = pd.read_csv('nasdaq_data_original.csv')
+def meli_eda_analysis_stocks():
+    chosen_ticker = chosen_symbol_list[1]
+    x_data = original_nasdaq_data.iloc[:, 0]
+    y_data = original_nasdaq_data[chosen_ticker]
+    eda_analysis_stocks(chosen_ticker, x_data, y_data)
 
-    # Line chart of closing stock price for a specific company over time
-    company_name = 'BKNG'
-    x_data = df.iloc[:, 0]
-    y_data = df[company_name]
-    plt.figure(figsize=(10, 6))
-    sns.lineplot(x=x_data, y=y_data, data=df, color='green')
-    plt.title(f'Closing Stock Price of {company_name} Over Time')
-    plt.xlabel('Date')
-    plt.xticks(x_data, rotation='vertical')
-    plt.ylabel('Closing Stock Price')
 
-    # Setting the number of ticks
-    plt.locator_params(axis='x', nbins=24)
+def bkng_eda_analysis_stocks():
+    chosen_ticker = chosen_symbol_list[2]
+    x_data = original_nasdaq_data.iloc[:, 0]
+    y_data = original_nasdaq_data[chosen_ticker]
+    eda_analysis_stocks(chosen_ticker, x_data, y_data)
 
-def ctas_EDAanalysis_stocks():
-    df = pd.read_csv('nasdaq_data_original.csv')
 
-    # Line chart of closing stock price for a specific company over time
-    company_name = 'CTAS'
-    x_data = df.iloc[:, 0]
-    y_data = df[company_name]
-    plt.figure(figsize=(10, 6))
-    sns.lineplot(x=x_data, y=y_data, data=df, color='orange')
-    plt.title(f'Closing Stock Price of {company_name} Over Time')
-    plt.xlabel('Date')
-    plt.xticks(x_data, rotation='vertical')
-    plt.ylabel('Closing Stock Price')
-
-    # Setting the number of ticks
-    plt.locator_params(axis='x', nbins=24)
+def ctas_eda_analysis_stocks():
+    chosen_ticker = chosen_symbol_list[3]
+    x_data = original_nasdaq_data.iloc[:, 0]
+    y_data = original_nasdaq_data[chosen_ticker]
+    eda_analysis_stocks(chosen_ticker, x_data, y_data)
 
 
 # Press the green button in the gutter to run the script.
