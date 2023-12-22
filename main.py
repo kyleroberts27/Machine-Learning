@@ -12,6 +12,7 @@ from sklearn.cluster import KMeans
 import seaborn as sns
 from operator import itemgetter
 import plotly.express as px
+from prophet import Prophet
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -20,6 +21,7 @@ chosen_symbol_list = ['SBUX', 'MELI', 'BKNG', 'CTAS']
 
 correlated_stocks = pd.read_csv("correlation.csv")
 original_nasdaq_data = pd.read_csv("nasdaq_data_original.csv")
+prophet_data = pd.read_csv("nasdaq_data_original.csv")
 
 
 def retrieving_nasdaq_information():
@@ -102,6 +104,50 @@ def kmeans_clustering():
         print(f'{tickers}')
 
     print(Fore.GREEN + f"\nTicker Clusters Shown ✓")
+
+
+def prophet_analysis(chosen_stock, days):
+    df = prophet_data.reset_index().rename(columns={'Date': 'ds', chosen_stock: 'y'})
+    df['y'] = np.log(df['y'])
+    model = Prophet(
+        daily_seasonality=True,
+        yearly_seasonality=True,
+        weekly_seasonality=True,
+        changepoint_prior_scale=0.05,
+        seasonality_prior_scale=10.0
+    )
+
+    model.fit(df)
+    future = model.make_future_dataframe(periods=days)  # forecasting for 1 year from now.
+    forecast = model.predict(future)
+
+    figure = model.plot(forecast)
+    plt.title(f"Facebook Prediction for")
+    plt.show()
+
+
+def sbux_prophet():
+    chosen_stock = chosen_symbol_list[0]
+    days = 365
+    prophet_analysis(chosen_stock, days)
+
+
+def meli_prophet():
+    chosen_stock = chosen_symbol_list[1]
+    days = 365
+    prophet_analysis(chosen_stock, days)
+
+
+def bkng_prophet():
+    chosen_stock = chosen_symbol_list[2]
+    days = 365
+    prophet_analysis(chosen_stock, days)
+
+
+def ctas_prophet():
+    chosen_stock = chosen_symbol_list[3]
+    days = 365
+    prophet_analysis(chosen_stock, days)
 
 
 def stock_correlation():
@@ -210,6 +256,7 @@ def eda_analysis_stocks(chosen_ticker, x_data, y_data):
 
     # Setting the number of ticks
     plt.locator_params(axis='x', nbins=24)
+    plt.show()
 
 
 def sbux_eda_analysis_stocks():
@@ -249,5 +296,9 @@ if __name__ == '__main__':
     meli_correlated_stocks()
     bkng_correlated_stocks()
     ctas_correlated_stocks()
+    sbux_prophet()
+    meli_prophet()
+    bkng_prophet()
+    ctas_prophet()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
