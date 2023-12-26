@@ -243,7 +243,7 @@ def stock_correlation():
     print(Fore.GREEN + f"Stock Correlation Complete ✓\n")
 
 
-def correlation_chosen_stocks(chosen_ticker, row1, row2):
+def positive_correlation_stocks(chosen_ticker, row1, row2):
     # Putting the data into a dictionary
     ticker_dictionary = {}
     for key in row1:
@@ -273,6 +273,16 @@ def correlation_chosen_stocks(chosen_ticker, row1, row2):
         counter += 1
     print("\n")
 
+
+def negative_stock_correlation(chosen_ticker, row1, row2):
+    # Putting the data into a dictionary
+    ticker_dictionary = {}
+    for key in row1:
+        for value in row2:
+            ticker_dictionary[key] = value
+            row2.remove(value)
+            break
+
     # Initialize the smallest_stocks and sets it to 11
     smallest_stocks = 10
 
@@ -292,43 +302,81 @@ def correlation_chosen_stocks(chosen_ticker, row1, row2):
     print("\n")
 
 
-def sbux_correlated_stocks():
+def sbux_neg_correlation():
     # Getting data
     row1 = correlated_stocks.iloc[0:, 0].tolist()
     row2 = correlated_stocks['SBUX'].tolist()
     chosen_ticker = chosen_symbol_list[0]
 
-    correlation_chosen_stocks(chosen_ticker, row1, row2)
+    negative_stock_correlation(chosen_ticker, row1, row2)
 
 
-def meli_correlated_stocks():
+def meli_neg_correlation():
+    # Getting data
+    row1 = correlated_stocks.iloc[0:, 0].tolist()
+    row2 = correlated_stocks['MELI'].tolist()
+    chosen_ticker = chosen_symbol_list[1]
+
+    negative_stock_correlation(chosen_ticker, row1, row2)
+
+
+
+def bkng_neg_correlation():
+    # Getting data
+    row1 = correlated_stocks.iloc[0:, 0].tolist()
+    row2 = correlated_stocks['BKNG'].tolist()
+    chosen_ticker = chosen_symbol_list[2]
+
+    negative_stock_correlation(chosen_ticker, row1, row2)
+
+
+def ctas_neg_correlation():
+    # Getting data
+    row1 = correlated_stocks.iloc[0:, 0].tolist()
+    row2 = correlated_stocks['CTAS'].tolist()
+    chosen_ticker = chosen_symbol_list[3]
+
+    negative_stock_correlation(chosen_ticker, row1, row2)
+
+
+
+def pos_sbux_correlated_stocks():
+    # Getting data
+    row1 = correlated_stocks.iloc[0:, 0].tolist()
+    row2 = correlated_stocks['SBUX'].tolist()
+    chosen_ticker = chosen_symbol_list[0]
+
+    positive_correlation_stocks(chosen_ticker, row1, row2)
+
+
+def pos_meli_correlated_stocks():
     # Getting data
     df = pd.read_csv("correlation.csv")
     row1 = df.iloc[0:, 0].tolist()
     row2 = df['MELI'].tolist()
     chosen_ticker = chosen_symbol_list[1]
 
-    correlation_chosen_stocks(chosen_ticker, row1, row2)
+    positive_correlation_stocks(chosen_ticker, row1, row2)
 
 
-def bkng_correlated_stocks():
+def pos_bkng_correlated_stocks():
     # Getting data
     df = pd.read_csv("correlation.csv")
     row1 = df.iloc[0:, 0].tolist()
     row2 = df['BKNG'].tolist()
     chosen_ticker = chosen_symbol_list[2]
 
-    correlation_chosen_stocks(chosen_ticker, row1, row2)
+    positive_correlation_stocks(chosen_ticker, row1, row2)
 
 
-def ctas_correlated_stocks():
+def pos_ctas_correlated_stocks():
     # Getting data
     df = pd.read_csv("correlation.csv")
     row1 = df.iloc[0:, 0].tolist()
     row2 = df['CTAS'].tolist()
     chosen_ticker = chosen_symbol_list[3]
 
-    correlation_chosen_stocks(chosen_ticker, row1, row2)
+    positive_correlation_stocks(chosen_ticker, row1, row2)
 
 
 def eda_analysis_stocks(chosen_ticker, x_data, y_data):
@@ -377,10 +425,10 @@ if __name__ == '__main__':
     #retrieving_nasdaq_information()
     #kmeans_clustering()
     #stock_correlation()
-    sbux_correlated_stocks()
-    meli_correlated_stocks()
-    bkng_correlated_stocks()
-    ctas_correlated_stocks()
+    #pos_sbux_correlated_stocks()
+    # pos_meli_correlated_stocks()
+    # pos_bkng_correlated_stocks()
+    # pos_ctas_correlated_stocks()
     # sbux_eda_analysis_stocks()
     # meli_eda_analysis_stocks()
     # bkng_eda_analysis_stocks()
@@ -393,6 +441,10 @@ if __name__ == '__main__':
     #meli_linear_regression()
     #bkng_linear_regression()
     #ctas_linear_regression()
+    sbux_neg_correlation()
+    meli_neg_correlation()
+    bkng_neg_correlation()
+    ctas_neg_correlation()
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
