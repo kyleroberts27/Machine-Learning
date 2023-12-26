@@ -13,6 +13,9 @@ import seaborn as sns
 from operator import itemgetter
 import plotly.express as px
 from prophet import Prophet
+import pickle
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -106,6 +109,88 @@ def kmeans_clustering():
     print(Fore.GREEN + f"\nTicker Clusters Shown ✓")
 
 
+def linear_regression(dates, prices, chosen_stock):
+    # Convert to numpy array and reshape them
+    dates = np.asanyarray(dates)
+    prices = np.asanyarray(prices)
+    dates = np.reshape(dates, (len(dates), 1))
+    prices = np.reshape(prices, (len(prices), 1))
+
+    # Load Pickle File to get the previous saved model accuracy
+    try:
+        pickle_in = open("prediction.pickle", "rb")
+        reg = pickle.load(pickle_in)
+        xtrain, xtest, ytrain, ytest = train_test_split(dates, prices, test_size=1)
+        best = reg.score(ytrain, ytest)
+    except:
+        pass
+
+    # Get the highest accuracy model
+    best = 0
+    for _ in range(100):
+        xtrain, xtest, ytrain, ytest = train_test_split(dates, prices, test_size=0.80)
+        reg = LinearRegression().fit(xtrain, ytrain)
+        acc = reg.score(xtest, ytest)
+        if acc > best:
+            best = acc
+            # Save model to pickle format
+            with open('prediction.pickle', 'wb') as f:
+                pickle.dump(reg, f)
+            print(acc)
+
+    # Load linear regression model
+    pickle_in = open("prediction.pickle", "rb")
+    reg = pickle.load(pickle_in)
+
+    # Get the average accuracy of the model
+    mean = 0
+    for i in range(10):
+        # Random Split Data
+        msk = np.random.rand(len(original_nasdaq_data)) < 0.8
+        xtest = dates[~msk]
+        ytest = prices[~msk]
+        mean += reg.score(xtest, ytest)
+
+    print("Average Accuracy:", mean / 10)
+
+    # Plot Predicted VS Actual Data
+    plt.plot(xtest, ytest, color='green', linewidth=1, label='Actual Price')  # plotting the initial datapoints
+    plt.plot(xtest, reg.predict(xtest), color='blue', linewidth=3,
+             label='Predicted Price')  # plotting the line made by linear regression
+    plt.title(f"Linear Regression {chosen_stock} | Time vs. Price ")
+    plt.legend()
+    plt.xlabel('Date Integer')
+    plt.show()
+
+
+def sbux_linear_regression():
+    dates = list(range(0, int(len(original_nasdaq_data))))
+    chosen_stock = chosen_symbol_list[0]
+    prices = original_nasdaq_data[chosen_stock]
+    linear_regression(dates, prices, chosen_stock)
+
+
+def meli_linear_regression():
+    dates = list(range(0, int(len(original_nasdaq_data))))
+    chosen_stock = chosen_symbol_list[1]
+    prices = original_nasdaq_data[chosen_stock]
+    linear_regression(dates, prices, chosen_stock)
+
+
+def bkng_linear_regression():
+    dates = list(range(0, int(len(original_nasdaq_data))))
+    chosen_stock = chosen_symbol_list[2]
+    prices = original_nasdaq_data[chosen_stock]
+    linear_regression(dates, prices, chosen_stock)
+
+
+def ctas_linear_regression():
+    dates = list(range(0, int(len(original_nasdaq_data))))
+    chosen_stock = chosen_symbol_list[3]
+    prices = original_nasdaq_data[chosen_stock]
+    linear_regression(dates, prices, chosen_stock)
+
+
 def prophet_analysis(chosen_stock, days):
     df = prophet_data.reset_index().rename(columns={'Date': 'ds', chosen_stock: 'y'})
     df['y'] = np.log(df['y'])
@@ -122,7 +207,7 @@ def prophet_analysis(chosen_stock, days):
     forecast = model.predict(future)
 
     figure = model.plot(forecast)
-    plt.title(f"Facebook Prediction for")
+    plt.title(f"Facebook Prediction for {chosen_stock}")
     plt.show()
 
 
@@ -296,9 +381,18 @@ if __name__ == '__main__':
     meli_correlated_stocks()
     bkng_correlated_stocks()
     ctas_correlated_stocks()
-    sbux_prophet()
-    meli_prophet()
-    bkng_prophet()
-    ctas_prophet()
+    # sbux_eda_analysis_stocks()
+    # meli_eda_analysis_stocks()
+    # bkng_eda_analysis_stocks()
+    # ctas_eda_analysis_stocks()
+    # sbux_prophet()
+    # meli_prophet()
+    # bkng_prophet()
+    #ctas_prophet()
+    #sbux_linear_regression()
+    #meli_linear_regression()
+    #bkng_linear_regression()
+    #ctas_linear_regression()
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
