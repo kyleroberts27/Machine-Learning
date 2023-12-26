@@ -2,10 +2,12 @@
 # Import libraries
 import yfinance as yf
 import pandas as pd
+from pandas import to_datetime
 from colorama import Fore
 from sklearn.tree import DecisionTreeClassifier
 import numpy as np
 import matplotlib.pyplot as plt
+plt.style.use('fivethirtyeight')
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
@@ -16,6 +18,19 @@ from prophet import Prophet
 import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
+from statsmodels.tsa.stattools import adfuller
+from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.arima_model import ARIMA
+import statsmodels.api as sm
+from pmdarima.arima import auto_arima
+from pylab import rcParams
+rcParams['figure.figsize'] = 10, 6
+import os
+import warnings
+warnings.filterwarnings('ignore')
+
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+import math
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -25,6 +40,8 @@ chosen_symbol_list = ['SBUX', 'MELI', 'BKNG', 'CTAS']
 correlated_stocks = pd.read_csv("correlation.csv")
 original_nasdaq_data = pd.read_csv("nasdaq_data_original.csv")
 prophet_data = pd.read_csv("nasdaq_data_original.csv")
+dateparse = lambda dates: pd.to_datetime(dates, format='%Y-%m-%d')
+arima_data = pd.read_csv('nasdaq_data_original.csv',sep=',', index_col='Date', parse_dates=['Date'], date_parser=dateparse).fillna(0)
 
 
 def retrieving_nasdaq_information():
@@ -107,6 +124,81 @@ def kmeans_clustering():
         print(f'{tickers}')
 
     print(Fore.GREEN + f"\nTicker Clusters Shown ✓")
+
+
+def arima_stocks(chosen_stock, stock_symbol):
+    train_data, test_data = chosen_stock[3:int(len(chosen_stock) * 0.05)], chosen_stock[int(len(chosen_stock) * 0.05):]
+
+    train_arima = train_data
+    test_arima = test_data
+
+    history = [x for x in train_arima]
+    y = test_arima
+    # make first prediction
+    predictions = list()
+    model = sm.tsa.arima.ARIMA(history, order=(1, 1, 1))
+    model_fit = model.fit()
+    yhat = model_fit.forecast()[0]
+    predictions.append(yhat)
+    history.append(y[0])
+
+    # rolling forecasts
+    for i in range(1, len(y)):
+        # predict
+        model = sm.tsa.arima.ARIMA(history, order=(1, 1, 0))
+        model_fit = model.fit()
+        yhat = model_fit.forecast()[0]
+        # invert transformed prediction
+        predictions.append(yhat)
+        # observation
+        obs = y[i]
+        history.append(obs)
+
+    # report performance
+    print(f'{stock_symbol}:')
+    mse = mean_squared_error(y, predictions)
+    print('MSE: ' + str(mse))
+    mae = mean_absolute_error(y, predictions)
+    print('MAE: ' + str(mae))
+    rmse = math.sqrt(mean_squared_error(y, predictions))
+    print('RMSE: ' + str(rmse))
+
+    import matplotlib.pyplot as plt
+    plt.figure(figsize=(16, 8))
+    plt.plot(chosen_stock.index[-600:], chosen_stock.tail(600), color='green', label='Train Stock Price')
+    plt.plot(test_data.index, y, color='blue', label='Real Stock Price')
+    plt.plot(test_data.index, predictions, color='red', label='Predicted Stock Price')
+    plt.title(f'{stock_symbol} Stock Price Prediction')
+    plt.xlabel('Date')
+    plt.ylabel(f'{stock_symbol} Stock Price')
+    plt.legend()
+    plt.grid(True)
+    plt.savefig('arima_model.pdf')
+    plt.show()
+
+
+def sbux_arima():
+    chosen_stock = arima_data['SBUX']
+    stock_symbol = chosen_symbol_list[0]
+    arima_stocks(chosen_stock, stock_symbol)
+
+
+def meli_arima():
+    chosen_stock = arima_data['MELI']
+    stock_symbol = chosen_symbol_list[1]
+    arima_stocks(chosen_stock, stock_symbol)
+
+
+def bkng_arima():
+    chosen_stock = arima_data['BKNG']
+    stock_symbol = chosen_symbol_list[2]
+    arima_stocks(chosen_stock, stock_symbol)
+
+
+def ctas_arima():
+    chosen_stock = arima_data['CTAS']
+    stock_symbol = chosen_symbol_list[3]
+    arima_stocks(chosen_stock, stock_symbol)
 
 
 def linear_regression(dates, prices, chosen_stock):
@@ -441,10 +533,14 @@ if __name__ == '__main__':
     #meli_linear_regression()
     #bkng_linear_regression()
     #ctas_linear_regression()
-    sbux_neg_correlation()
-    meli_neg_correlation()
-    bkng_neg_correlation()
-    ctas_neg_correlation()
+    # sbux_neg_correlation()
+    # meli_neg_correlation()
+    # bkng_neg_correlation()
+    # ctas_neg_correlation()
+    sbux_arima()
+    meli_arima()
+    bkng_arima()
+    ctas_arima()
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
