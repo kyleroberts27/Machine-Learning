@@ -1,4 +1,3 @@
-# This is a sample Python script.
 # Import libraries
 import yfinance as yf
 import pandas as pd
@@ -9,7 +8,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 plt.style.use('fivethirtyeight')
 from sklearn.decomposition import PCA
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.cluster import KMeans
 import seaborn as sns
 from operator import itemgetter
@@ -28,6 +27,7 @@ rcParams['figure.figsize'] = 10, 6
 import os
 import warnings
 warnings.filterwarnings('ignore')
+import tensorflow as tf
 
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
@@ -124,6 +124,81 @@ def kmeans_clustering():
         print(f'{tickers}')
 
     print(Fore.GREEN + f"\nTicker Clusters Shown ✓")
+
+
+def lstm_stocks(chosen_stock):
+    keras = tf.keras
+    Sequential = keras.models.Sequential
+    Dense = keras.layers.Dense
+    LSTM = keras.layers.LSTM
+    df2 = original_nasdaq_data.reset_index()[chosen_stock]
+
+    scaler = MinMaxScaler()
+    df2 = scaler.fit_transform(np.array(df2).reshape(-1, 1))
+    train_size = int(len(df2) * 0.65)
+    test_size = len(df2) - train_size
+    train_data, test_data = df2[0:train_size, :], df2[train_size:len(df2), :1]
+
+    # calling the create dataset function to split the data into
+    # input output datasets with time step 100
+    time_step = 10
+    X_train, Y_train = create_dataset(train_data, time_step)
+    X_test, Y_test = create_dataset(test_data, time_step)
+
+    model = Sequential()
+    model.add(LSTM(50, return_sequences=True, input_shape=(X_train.shape[1], 1)))
+    model.add(LSTM(50, return_sequences=True))
+    model.add(LSTM(50))
+    model.add(Dense(1))
+    model.compile(loss='mean_squared_error', optimizer='adam')
+
+    history = model.fit(
+        X_train, Y_train,
+        epochs=150,
+        batch_size=16,
+        validation_split=0.1,
+        verbose=1,
+        shuffle=False
+    )
+
+    y_pred = model.predict(X_test)
+
+    plt.plot(Y_test, marker='.', label="true")
+    plt.plot(y_pred, 'r', label="prediction")
+    plt.ylabel('Value')
+    plt.xlabel('Time Step')
+    plt.legend()
+    plt.show()
+
+
+
+def create_dataset(dataset, time_step=1):
+    dataX, dataY = [], []
+    for i in range(len(dataset) - time_step - 1):
+        a = dataset[i:(i + time_step), 0]
+        dataX.append(a)
+        dataY.append(dataset[i + time_step, 0])
+    return np.array(dataX), np.array(dataY)
+
+
+def sbux_lstm():
+    chosen_stock = chosen_symbol_list[0]
+    lstm_stocks(chosen_stock)
+
+
+def meli_lstm():
+    chosen_stock = chosen_symbol_list[1]
+    lstm_stocks(chosen_stock)
+
+
+def bkng_lstm():
+    chosen_stock = chosen_symbol_list[2]
+    lstm_stocks(chosen_stock)
+
+
+def ctas_lstm():
+    chosen_stock = chosen_symbol_list[3]
+    lstm_stocks(chosen_stock)
 
 
 def arima_stocks(chosen_stock, stock_symbol):
@@ -537,10 +612,14 @@ if __name__ == '__main__':
     # meli_neg_correlation()
     # bkng_neg_correlation()
     # ctas_neg_correlation()
-    sbux_arima()
-    meli_arima()
-    bkng_arima()
-    ctas_arima()
+    # sbux_arima()
+    # meli_arima()
+    # bkng_arima()
+    # ctas_arima()
+    sbux_lstm()
+    meli_lstm()
+    bkng_lstm()
+    ctas_lstm()
 
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
