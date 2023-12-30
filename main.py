@@ -31,6 +31,8 @@ import tensorflow as tf
 
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 import math
+import streamlit as st
+from streamlit_option_menu import option_menu
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
@@ -76,7 +78,8 @@ def kmeans_clustering():
     explained_variance = pca.explained_variance_ratio_
 
     PC_df = pd.DataFrame(PCs, index=dataset.index[:])
-    PC_df.to_csv("PCAReduction.csv", mode='w')
+    #PC_df.to_csv("PCAReduction.csv", mode='w')
+
     print(Fore.LIGHTWHITE_EX + f'{PC_df}')
 
     print(Fore.GREEN + "PCA Reduction Complete ✓")
@@ -106,24 +109,31 @@ def kmeans_clustering():
         else:
             cluster3.append(ticker_symbol)
 
-    print('Clusters Below:')
-    print(Fore.LIGHTWHITE_EX + f"Cluster 1:")
-    for tickers in cluster0:
-        print(f'{tickers}')
+    new_title = '<p style="font-family:sans-serif; font-size: 30px;">Clusters Below:</p>'
+    st.markdown(new_title, unsafe_allow_html=True)
+    col1, col2, col3, col4 = st.columns([0.7, 0.7, 0.7, 6])
+    with col1:
+        st.write(f"Cluster 1:")
+        for tickers in cluster0:
+            st.write(f'{tickers}')
 
-    print(Fore.BLUE + f"\nCluster 2:")
-    for tickers in cluster1:
-        print(f'{tickers}')
+    with col2:
+        st.write(f"\nCluster 2:")
+        for tickers in cluster1:
+            st.write(f'{tickers}')
 
-    print(Fore.YELLOW + f"\nCluster 3:")
-    for tickers in cluster2:
-        print(f'{tickers}')
+    with col3:
+        st.write(f"\nCluster 3:")
+        for tickers in cluster2:
+            st.write(f'{tickers}')
 
-    print(Fore.MAGENTA + f"\nCluster 4:")
-    for tickers in cluster3:
-        print(f'{tickers}')
+    with col4:
+        st.write(f"\nCluster 4:")
+        for tickers in cluster3:
+            st.write(f'{tickers}')
 
     print(Fore.GREEN + f"\nTicker Clusters Shown ✓")
+    print(Fore.LIGHTWHITE_EX + " ")
 
 
 def lstm_stocks(chosen_stock):
@@ -168,8 +178,8 @@ def lstm_stocks(chosen_stock):
     plt.ylabel('Value')
     plt.xlabel('Time Step')
     plt.legend()
-    plt.show()
-
+    st.pyplot(plt)
+    #plt.show()
 
 
 def create_dataset(dataset, time_step=1):
@@ -230,13 +240,13 @@ def arima_stocks(chosen_stock, stock_symbol):
         history.append(obs)
 
     # report performance
-    print(f'{stock_symbol}:')
+    st.write(f'{stock_symbol}:')
     mse = mean_squared_error(y, predictions)
-    print('MSE: ' + str(mse))
+    st.write('MSE: ' + str(mse))
     mae = mean_absolute_error(y, predictions)
-    print('MAE: ' + str(mae))
+    st.write('MAE: ' + str(mae))
     rmse = math.sqrt(mean_squared_error(y, predictions))
-    print('RMSE: ' + str(rmse))
+    st.write('RMSE: ' + str(rmse))
 
     import matplotlib.pyplot as plt
     plt.figure(figsize=(16, 8))
@@ -248,8 +258,9 @@ def arima_stocks(chosen_stock, stock_symbol):
     plt.ylabel(f'{stock_symbol} Stock Price')
     plt.legend()
     plt.grid(True)
-    plt.savefig('arima_model.pdf')
-    plt.show()
+    #plt.savefig('arima_model.pdf')
+    st.pyplot(plt)
+    #plt.show()
 
 
 def sbux_arima():
@@ -318,7 +329,7 @@ def linear_regression(dates, prices, chosen_stock):
         ytest = prices[~msk]
         mean += reg.score(xtest, ytest)
 
-    print("Average Accuracy:", mean / 10)
+    st.write("Average Accuracy:", mean / 10)
 
     # Plot Predicted VS Actual Data
     plt.plot(xtest, ytest, color='green', linewidth=1, label='Actual Price')  # plotting the initial datapoints
@@ -327,7 +338,8 @@ def linear_regression(dates, prices, chosen_stock):
     plt.title(f"Linear Regression {chosen_stock} | Time vs. Price ")
     plt.legend()
     plt.xlabel('Date Integer')
-    plt.show()
+    st.pyplot(plt)
+    #plt.show()
 
 
 def sbux_linear_regression():
@@ -375,7 +387,7 @@ def prophet_analysis(chosen_stock, days):
 
     figure = model.plot(forecast)
     plt.title(f"Facebook Prediction for {chosen_stock}")
-    plt.show()
+    st.pyplot(plt)
 
 
 def sbux_prophet():
@@ -430,13 +442,13 @@ def positive_correlation_stocks(chosen_ticker, row1, row2):
     del result_values_largest[chosen_ticker]
 
     # Printing the result
-    print(Fore.LIGHTWHITE_EX + f"The top 10 positively correlated stocks for {chosen_ticker}:")
+    st.write(f"The top 10 positively correlated stocks for {chosen_ticker}:")
 
     counter = 1
 
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_largest.items():
-        print(f"{counter}. {key}: {value}")
+        st.write(f"{counter}. {key}: {value}")
         counter += 1
     print("\n")
 
@@ -458,13 +470,13 @@ def negative_stock_correlation(chosen_ticker, row1, row2):
     result_values_smallest = dict(sorted(ticker_dictionary.items(), key=itemgetter(1), reverse=False)[:smallest_stocks])
 
     # Printing the result
-    print(f"The top 10 negatively correlated stocks for {chosen_ticker}:")
+    st.write(f"The top 10 negatively correlated stocks for {chosen_ticker}:")
 
     counter = 1
 
     # Printing a dictionary using a loop and the items() method
     for key, value in result_values_smallest.items():
-        print(f"{counter}. {key}: {value}")
+        st.write(f"{counter}. {key}: {value}")
         counter += 1
     print("\n")
 
@@ -487,7 +499,6 @@ def meli_neg_correlation():
     negative_stock_correlation(chosen_ticker, row1, row2)
 
 
-
 def bkng_neg_correlation():
     # Getting data
     row1 = correlated_stocks.iloc[0:, 0].tolist()
@@ -504,7 +515,6 @@ def ctas_neg_correlation():
     chosen_ticker = chosen_symbol_list[3]
 
     negative_stock_correlation(chosen_ticker, row1, row2)
-
 
 
 def pos_sbux_correlated_stocks():
@@ -556,7 +566,8 @@ def eda_analysis_stocks(chosen_ticker, x_data, y_data):
 
     # Setting the number of ticks
     plt.locator_params(axis='x', nbins=24)
-    plt.show()
+    st.pyplot(plt)
+    #plt.show()
 
 
 def sbux_eda_analysis_stocks():
@@ -587,12 +598,84 @@ def ctas_eda_analysis_stocks():
     eda_analysis_stocks(chosen_ticker, x_data, y_data)
 
 
+def seven_day_sbux_prophet():
+    chosen_stock = chosen_symbol_list[0]
+    days = 7
+    prophet_analysis(chosen_stock, days)
+
+
+def seven_day_meli_prophet():
+    chosen_stock = chosen_symbol_list[1]
+    days = 7
+    prophet_analysis(chosen_stock, days)
+
+
+def seven_day_bkng_prophet():
+    chosen_stock = chosen_symbol_list[2]
+    days = 7
+    prophet_analysis(chosen_stock, days)
+
+
+def seven_day_ctas_prophet():
+    chosen_stock = chosen_symbol_list[3]
+    days = 7
+    prophet_analysis(chosen_stock, days)
+
+
+def fourteen_day_sbux_prophet():
+    chosen_stock = chosen_symbol_list[0]
+    days = 14
+    prophet_analysis(chosen_stock, days)
+
+
+def fourteen_day_meli_prophet():
+    chosen_stock = chosen_symbol_list[1]
+    days = 14
+    prophet_analysis(chosen_stock, days)
+
+
+def fourteen_day_bkng_prophet():
+    chosen_stock = chosen_symbol_list[2]
+    days = 14
+    prophet_analysis(chosen_stock, days)
+
+
+def fourteen_day_ctas_prophet():
+    chosen_stock = chosen_symbol_list[3]
+    days = 14
+    prophet_analysis(chosen_stock, days)
+
+
+def thirty_day_sbux_prophet():
+    chosen_stock = chosen_symbol_list[0]
+    days = 30
+    prophet_analysis(chosen_stock, days)
+
+
+def thirty_day_meli_prophet():
+    chosen_stock = chosen_symbol_list[1]
+    days = 30
+    prophet_analysis(chosen_stock, days)
+
+
+def thirty_day_bkng_prophet():
+    chosen_stock = chosen_symbol_list[2]
+    days = 30
+    prophet_analysis(chosen_stock, days)
+
+
+def thirty_day_ctas_prophet():
+    chosen_stock = chosen_symbol_list[3]
+    days = 30
+    prophet_analysis(chosen_stock, days)
+
+
 # Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    #retrieving_nasdaq_information()
-    #kmeans_clustering()
-    #stock_correlation()
-    #pos_sbux_correlated_stocks()
+#if __name__ == '__main__':
+    # retrieving_nasdaq_information()
+    # kmeans_clustering()
+    # stock_correlation()
+    # pos_sbux_correlated_stocks()
     # pos_meli_correlated_stocks()
     # pos_bkng_correlated_stocks()
     # pos_ctas_correlated_stocks()
@@ -603,11 +686,11 @@ if __name__ == '__main__':
     # sbux_prophet()
     # meli_prophet()
     # bkng_prophet()
-    #ctas_prophet()
-    #sbux_linear_regression()
-    #meli_linear_regression()
-    #bkng_linear_regression()
-    #ctas_linear_regression()
+    # ctas_prophet()
+    # sbux_linear_regression()
+    # meli_linear_regression()
+    # bkng_linear_regression()
+    # ctas_linear_regression()
     # sbux_neg_correlation()
     # meli_neg_correlation()
     # bkng_neg_correlation()
@@ -616,10 +699,223 @@ if __name__ == '__main__':
     # meli_arima()
     # bkng_arima()
     # ctas_arima()
-    sbux_lstm()
-    meli_lstm()
-    bkng_lstm()
-    ctas_lstm()
+    # sbux_lstm()
+    # meli_lstm()
+    # bkng_lstm()
+    # ctas_lstm()
 
+st.set_page_config(layout="wide")
+
+selected = option_menu(
+    menu_title=None,
+    options=["Home", "Clusters", "Correlation", "EDA Analysis", "ARIMA", "LSTM", "Linear Regression", "Prophet", "Buy/Sell"],
+    icons=["house", "bounding-box-circles", "c-circle", "graph-up", "bezier", "diagram-3", "graph-up-arrow", "facebook", "currency-exchange"],
+    menu_icon="cast",
+    default_index=0,
+    orientation="horizontal",
+    styles={
+        "container": {"padding": "0!important", "background-color": "#fafafa"},
+        "icon": {"color": "blue", "font-size": "20px"},
+        "nav-link": {"font-size": "20px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
+        "nav-link-selected": {"background-color": "#89cff0"},
+    }
+
+)
+
+if selected == "Home":
+    st.title("COM624 - Kyle Roberts Software Solution")
+    st.write("Within this application is my solution to the tasks proposed within the assessment brief")
+    st.write("My chosen stocks are:")
+    col1, col2 = st.columns([1,17])
+    with col1:
+        st.image("SBUX-logo.png", width=65)
+    with col2:
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">SBUX - Starbucks Corporation</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+
+    with col1:
+        st.write("")
+    with col2:
+        st.write("")
+
+    with col1:
+        st.image("MELI-logo.png", width=60)
+    with col2:
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">MELI - MercadoLibre Corporation</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+
+    with col1:
+        st.write("")
+    with col2:
+        st.write("")
+
+    with col1:
+        st.image("BKNG-logo.png", width=70)
+    with col2:
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">BKNG - Bookings Holdings Corporation</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+
+    with col1:
+        st.write("")
+    with col2:
+        st.write("")
+
+    with col1:
+        st.image("CTAS-logo.png", width=70)
+    with col2:
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">CTAS - Cintas Corporation</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+
+if selected == "Correlation":
+    symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
+    col1, col2 = st.columns([1,4])
+    if symbol_options_menu == "SBUX":
+        with col1:
+            pos_sbux_correlated_stocks()
+        with col2:
+            sbux_neg_correlation()
+    if symbol_options_menu == "MELI":
+        with col1:
+            pos_meli_correlated_stocks()
+        with col2:
+            meli_neg_correlation()
+    if symbol_options_menu == "BKNG":
+        with col1:
+            pos_bkng_correlated_stocks()
+        with col2:
+            bkng_neg_correlation()
+    if symbol_options_menu == "CTAS":
+        with col1:
+            pos_ctas_correlated_stocks()
+        with col2:
+            ctas_neg_correlation()
+
+if selected == "Clusters":
+    kmeans_clustering()
+
+if selected == "EDA Analysis":
+    symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
+    if symbol_options_menu == "SBUX":
+        sbux_eda_analysis_stocks()
+    if symbol_options_menu == "MELI":
+        meli_eda_analysis_stocks()
+    if symbol_options_menu == "BKNG":
+        bkng_eda_analysis_stocks()
+    if symbol_options_menu == "CTAS":
+        ctas_eda_analysis_stocks()
+
+if selected == "ARIMA":
+    symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
+    if symbol_options_menu == "SBUX":
+        sbux_arima()
+    if symbol_options_menu == "MELI":
+        meli_arima()
+    if symbol_options_menu == "BKNG":
+        bkng_arima()
+    if symbol_options_menu == "CTAS":
+        ctas_arima()
+
+if selected == "LSTM":
+    symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
+    if symbol_options_menu == "SBUX":
+        sbux_lstm()
+    if symbol_options_menu == "MELI":
+        meli_lstm()
+    if symbol_options_menu == "BKNG":
+        bkng_lstm()
+    if symbol_options_menu == "CTAS":
+        ctas_lstm()
+
+if selected == "Linear Regression":
+    symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
+    if symbol_options_menu == "SBUX":
+        sbux_linear_regression()
+    if symbol_options_menu == "MELI":
+        meli_linear_regression()
+    if symbol_options_menu == "BKNG":
+        bkng_linear_regression()
+    if symbol_options_menu == "CTAS":
+        ctas_linear_regression()
+
+if selected == "Prophet":
+    symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
+    if symbol_options_menu == "SBUX":
+        st.write("Below is the Prophet Data for SBUX over the next 365 days:")
+        sbux_prophet()
+    if symbol_options_menu == "MELI":
+        st.write("Below is the Prophet Data for SBUX over the next 365 days:")
+        meli_prophet()
+    if symbol_options_menu == "BKNG":
+        st.write("Below is the Prophet Data for SBUX over the next 365 days:")
+        bkng_prophet()
+    if symbol_options_menu == "CTAS":
+        st.write("Below is the Prophet Data for SBUX over the next 365 days:")
+        ctas_prophet()
+
+if selected == "Buy/Sell":
+    symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
+    if symbol_options_menu == "SBUX":
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for SBUX over the next 7 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        seven_day_sbux_prophet()
+        st.write("Over the next 7 days my advice would be to sell your SBUX stock. This is because as shown above, the prophet data is showing the stock will reduce in price, meaning you will loose money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for SBUX over the next 14 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        fourteen_day_sbux_prophet()
+        st.write("Between 7-14 days my advice would be to sell your SBUX stock. This is because as shown above, the prophet data is showing the stock will reduce in price over these days, meaning you will loose money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for SBUX over the next 30 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        thirty_day_sbux_prophet()
+        st.write("Between 14-30 days my advice would be to buy SBUX stock. This is because as shown above, the prophet data is showing the stock will increase in price over these days, meaning you will gain money")
+
+    if symbol_options_menu == "MELI":
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for MELI over the next 7 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        seven_day_meli_prophet()
+        st.write("Over the next 7 days my advice would be to buy your MELI stock. This is because as shown above, the prophet data is showing the stock will increase in price, meaning you will gain money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for MELI over the next 14 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        fourteen_day_meli_prophet()
+        st.write("Between 7-14 days my advice would be to sell your MELI stock. This is because as shown above, the prophet data is showing the stock will reduce in price over these days, meaning you will loose money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for MELI over the next 30 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        thirty_day_meli_prophet()
+        st.write("Between 14-30 days my advice would be to sell your MELI stock. This is because as shown above, the prophet data is showing the stock will reduce in price over these days, meaning you will loose money")
+
+    if symbol_options_menu == "BKNG":
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for BKNG over the next 7 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        seven_day_bkng_prophet()
+        st.write("Over the next 7 days my advice would be to sell your BKNG stock. This is because as shown above, the prophet data is showing the stock will reduce in price, meaning you will loose money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for BKNG over the next 14 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        fourteen_day_bkng_prophet()
+        st.write("Between 7-14 days my advice would be to sell your BKNG stock. This is because as shown above, the prophet data is showing the stock will reduce in price over these days, meaning you will loose money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for BKNG over the next 30 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        thirty_day_bkng_prophet()
+        st.write("Between 14-30 days my advice would be to buy BKNG stock. This is because as shown above, the prophet data is showing the stock will increase in price over these days, meaning you will gain money")
+
+    if symbol_options_menu == "CTAS":
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for CTAS over the next 7 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        seven_day_ctas_prophet()
+        st.write("Over the next 7 days my advice would be to sell your CTAS stock. This is because as shown above, the prophet data is showing the stock will reduce in price, meaning you will loose money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for CTAS over the next 14 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        fourteen_day_ctas_prophet()
+        st.write("Between 7-14 days my advice would be to sell your CTAS stock. This is because as shown above, the prophet data is showing the stock will reduce in price over these days, meaning you will loose money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for CTAS over the next 30 days:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        thirty_day_ctas_prophet()
+        st.write("Between 14-30 days my advice would be to sell your CTAS stock. This is because as shown above, the prophet data is showing the stock will reduce in price over these days, meaning you will loose money")
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
