@@ -972,5 +972,3 @@ if selected == "Buy/Sell":
         st.markdown(new_title, unsafe_allow_html=True)
         st.write("As you can see below, the real world data for the last month shows that CTAS stock has actually increased 7.60% from the 01-12-2023 to 01-01-2024, compared to the prophet data which shows a dramatic decrease in the stock price.")
         st.image("CTAS-Real-Time-month.png", width=1760)
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
