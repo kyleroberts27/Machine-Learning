@@ -670,40 +670,6 @@ def thirty_day_ctas_prophet():
     prophet_analysis(chosen_stock, days)
 
 
-# Press the green button in the gutter to run the script.
-#if __name__ == '__main__':
-    # retrieving_nasdaq_information()
-    # kmeans_clustering()
-    # stock_correlation()
-    # pos_sbux_correlated_stocks()
-    # pos_meli_correlated_stocks()
-    # pos_bkng_correlated_stocks()
-    # pos_ctas_correlated_stocks()
-    # sbux_eda_analysis_stocks()
-    # meli_eda_analysis_stocks()
-    # bkng_eda_analysis_stocks()
-    # ctas_eda_analysis_stocks()
-    # sbux_prophet()
-    # meli_prophet()
-    # bkng_prophet()
-    # ctas_prophet()
-    # sbux_linear_regression()
-    # meli_linear_regression()
-    # bkng_linear_regression()
-    # ctas_linear_regression()
-    # sbux_neg_correlation()
-    # meli_neg_correlation()
-    # bkng_neg_correlation()
-    # ctas_neg_correlation()
-    # sbux_arima()
-    # meli_arima()
-    # bkng_arima()
-    # ctas_arima()
-    # sbux_lstm()
-    # meli_lstm()
-    # bkng_lstm()
-    # ctas_lstm()
-
 @st.cache_resource
 def load_sbux_lstm():
     sbux_lstm()
