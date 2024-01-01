@@ -109,7 +109,7 @@ def kmeans_clustering():
         else:
             cluster3.append(ticker_symbol)
 
-    new_title = '<p style="font-family:sans-serif; font-size: 30px;">Clusters Below:</p>'
+    new_title = '<p style="font-family:sans-serif; font-size: 30px;">The 4 Clusters after PCA and KMeans Below:</p>'
     st.markdown(new_title, unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns([0.7, 0.7, 0.7, 6])
     with col1:
@@ -745,8 +745,8 @@ selected = option_menu(
 if selected == "Home":
     st.title("COM624 - Kyle Roberts Software Solution")
     st.write("Student Number: 16291981")
-    st.write("Within this application is my solution to the tasks proposed within the assessment brief")
-    st.write("My chosen stocks are:")
+    st.write("Within this application is my solution to the tasks proposed within the assessment brief. I chose too halt the retrieving of the close data on the 3rd of December 2023 to try and keep my data consistant. This still means that the analysis of each of my chosen stocks is compiled over a year, however it does mean that it will not be the most upto date data, but this does give me the opportunity to compare my analysis of data against how it has actually performed in the real world")
+    st.write("My chosen stocks from the 4 clusters are:")
     col1, col2 = st.columns([1,17])
     with col1:
         st.image("SBUX-logo.png", width=65)
@@ -787,8 +787,11 @@ if selected == "Home":
         new_title = '<p style="font-family:sans-serif; font-size: 30px;">CTAS - Cintas Corporation</p>'
         st.markdown(new_title, unsafe_allow_html=True)
 
+    st.write("To choose the above stocks, I copied and pasted each ticker, from their respecitive clusters, into a wheel of fortune website so that my stocks were chosen completely randomly, meaning I did not end up choosing the stocks but only took the output of each wheel spin. These screenshots can be seen in my report.")
+    st.write("Apart from the 150 Epochs section in LSTM, all the data is loaded in real time by calling the specific functions for each stock and the data they output. However, once the LSTM for each stock is loaded, the graph data is cached until the user decides to close the application.")
+
 if selected == "Correlation":
-    symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
+    symbol_options_menu = st.selectbox("Choose a Stock:", options=chosen_symbol_list)
     col1, col2 = st.columns([1,4])
     if symbol_options_menu == "SBUX":
         with col1:
@@ -818,22 +821,33 @@ if selected == "EDA Analysis":
     symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
     if symbol_options_menu == "SBUX":
         st.write("As you can see below, between 02-12-2022 to 01-12-2023 SBUX has returned -5.57% meaning that if you put money into SBUX a year ago and held, your return would be less then what you put in. Compare this to XEL (SBUX's most postiviely correlated stock), which has a return of -11.15%. If you invested the same amount, you would be better off investing in SBUX as opposed to XEL.")
+        st.write("Close price 02-12-2022: 105.05")
+        st.write("Close price 01-12-2023: 99.02")
         st.write("However, over the past year, the NASDAQ 100 as whole, has returned just over 45%.")
-        st.write("However, if you look a bit deeper in to SBUX's dramatic drop, which from June 2022, has dropped 9.5%, analysts believe are pointing to slowing credit card data at the company as a sign of falling sales as the SBUX stock is dependent on consumer trends. This could be due to cost of living crisis gripping the USA causing customers to spend less on luxuries such as coffee with their average coffee price sitting at around £3.25.")
+        st.write("However, if you look a bit deeper in to SBUX's dramatic drop, which from June 2022, has dropped 9.5%, analysts believes it is due to slowing credit card data at the company as a sign of falling sales as the SBUX stock is dependent on consumer trends. This could be due to cost of living crisis gripping the USA causing customers to spend less on luxuries such as coffee with their average coffee price sitting at around £3.25.")
         sbux_eda_analysis_stocks()
     if symbol_options_menu == "MELI":
         st.write("As you can see below, between 02-12-2022 to 01-12-2023 MELI has returned 74.80% meaning that it even out performed the NASDAQ 100 as whole which, has returned just over 45% in the same period. This means that if you put £1,000 into MELI a year ago and held, your return would be get almost £1,750 meaning you would gain near to £750. Compare this to BKNG (MELI's most postiviely correlated stock), which has a return of 51.51%. If you invested the same amount, you would be better off investing in MELI as opposed to BKNG, which has almost a 24% gain on BKNG.")
+        st.write("Close price 02-12-2022: 945.07")
+        st.write("Close price 01-12-2023: 1652.01")
         st.write("Despite the global financial crisis and market volatility, MELI's value has increased dramatically. MELI's resilience in the face of competition and challenging economic conditions in Argentina is noteworthy. This could be due to the company choice to diversify into FinTech services, leveraging its e-commerce network to offer high-interest accounts, particularly in inflation-prone Argentina. This strategy has not only helped MELI withstand economic challenges but also solidified its market position. With a recent presedential election in Argentina and Javier Milei victory. He has promised to dollarise the economy and implement business-friendly policies. These developments could impact MELI's operations and stock value in the future, potentially favorably. However, this is all dependent on if Milei's policies are successfully implemented.")
         meli_eda_analysis_stocks()
     if symbol_options_menu == "BKNG":
         st.write("As you can see below, between 02-12-2022 to 01-12-2023 BKNG has returned 51.51% meaning that it also out performed the NASDAQ 100 as whole which, has returned just over 45% in the same period. This means that if you put money into BKNG a year ago and held, you would see great returns. Compare this to MAR (BKNG's most postiviely correlated stock), which has a return of 26.35%. If you invested the same amount, you would be better off investing in BKNG as opposed to MAR, with BKNG being at almost doubling its gain compared to MAR.")
+        st.write("Close price 02-12-2022: 2085.44")
+        st.write("Close price 01-12-2023: 3159.56")
         st.write("To explain why the BKNG stock is hitting highs is mainly down to BKNG's record profitability, meaning that travel demand is still high. BKNG makes it money because travellers use it services to; book flights, rent cars, reserve hotels. Paying the majority upfront. Not only this but in the first half of 2023, its total revenue was up 32% from the comparable period of 2022. By comparison, marketing expenses were only up by 15%. One final consideration is because the company spent $5.2 billion in the first half of the year repurchasing shares, this then forces its earnings per share up because its total number of shares outstanding is down.")
         bkng_eda_analysis_stocks()
     if symbol_options_menu == "CTAS":
-        st.write("As you can see below, between 02-12-2022 to 01-12-2023 CTAS has returned 20.69% meaning that it even though it may not have out performed the NASDAQ 100 as whole which, has returned just over 45% in the same period. This means you would make just under half the returns compared to the NASDAQ 100. However, it still means that if you put money into CTAS a year ago and held, you would see good returns. Compare this to ADBE (CTAS's most postiviely correlated stock), which has a return of 32.41%. Meaning if you invested the same amount, you would be better off investing in ADBE as opposed to CTAS, with ADBE returning more when compared to CTAS.")
+        st.write("As you can see below, between 02-12-2022 to 01-12-2023 CTAS has returned 20.69% meaning that it even though it may not have out performed the NASDAQ 100 as whole which, has returned just over 45% in the same period. It does means you would make just under half the returns compared to the NASDAQ 100. It still means that if you put money into CTAS a year ago and held, you would see good returns. Compare this to ADBE (CTAS's most postiviely correlated stock), which has a return of 32.41%. Meaning if you invested the same amount, you would be better off investing in ADBE as opposed to CTAS, with ADBE returning more when compared to CTAS.")
+        st.write("Close price 02-12-2022: 462.53")
+        st.write("Close price 01-12-2023: 558.25")
+        st.write("The main reason why  CTAS is perfoming strongly is from strong segmental performances and its focus on the enhancement of its product portfolio despite the adverse impacts of high costs and forex woes. This means the company’s focus on the enhancement of its product portfolio, along with investments in technology and existing facilities, maybe a factor in driving its performance in the near term. Not only this but CTAS continues to increase shareholders’ value through dividend payments & share repurchases. In the first three months of fiscal 2024, the company paid dividends worth $117.6 million, up approximately 20.4% year over year. It is also worth noting that Cintas has consistently raised its dividend for 40 straight years leading to strong confidence from investors.")
         ctas_eda_analysis_stocks()
 
 if selected == "ARIMA":
+    st.title("Overall analysis:")
+    st.write("Overall I believe the ARIMA model to be the most accurate at predicting data compared to all of the Machine Learning models for Predicition and Forecasting. This is because in all my models for each stock I gave it around 5% of the total dataset for training and as you can see, all of the graphs produced by it provide a good prediction for all of the stocks I have chosen, compared to the real stock price.")
     symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
     if symbol_options_menu == "SBUX":
         sbux_arima()
@@ -845,28 +859,54 @@ if selected == "ARIMA":
         ctas_arima()
 
 if selected == "LSTM":
+    st.title("Overall analysis:")
+    st.write("For me LSTM is the most interesting but takes the most amount of time for the model run through its process and predict the stock price. This meant trying to find a trade off between trying to keep the predicition accurate, whilst also trying to keep the time spent training the data to a minimum. For me this meant only training the Neural Network to 30 epochs, reducing the accuracy of the predicition but vastly decreasing the time it takes to generate said predicition. I say this because originally I had set the number of epochs for training the Neural Network to 150, which vastly improved the accuracy of the however, it meant that it took the model around 1 minute 30 seconds to complete its process and produce the graph. Whereas, 30 epochs takes about 30 seconds and is less accurate.")
     symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
     if symbol_options_menu == "SBUX":
+        st.write("Prediction for 30 epochs:")
         load_sbux_lstm()
+        st.write("Prediction for 150 epochs:")
+        st.image("SBUX-150-epochs.png", width=1760)
     if symbol_options_menu == "MELI":
+        st.write("Prediction for 30 epochs:")
         load_meli_lstm()
+        st.write("Prediction for 150 epochs:")
+        st.image("MELI-150-epochs.png", width=1760)
     if symbol_options_menu == "BKNG":
+        st.write("Prediction for 30 epochs:")
         load_bkng_lstm()
+        st.write("Prediction for 150 epochs:")
+        st.image("BKNG-150-epochs.png", width=1760)
     if symbol_options_menu == "CTAS":
-       load_ctas_lstm()
+        st.write("Prediction for 30 epochs:")
+        load_ctas_lstm()
+        st.write("Prediction for 150 epochs:")
+        st.image("CTAS-150-epochs.png", width=1760)
 
 if selected == "Linear Regression":
+    st.title("Overall analysis:")
+    st.write("Linear regression for me is the most basic Machine Learning model, as even though it takes the training data and uses an 80/20 for the testing and training data. It only shows a solid gradient to show whether the closing stock price has either increased or decreased over time. However, I find this the most useful compared to the other Machine Learning models because it is a basic and easy way to forecast future data and it gives a good trend of which direction the closing stock price is going and is a very easy to way to visualise the data. However, if you where to increase the split to say 90/10, it would end up corrupting the model and preventing it from running, as it hasn't been provided enough data to train the model on.")
     symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
     if symbol_options_menu == "SBUX":
+        st.write("As you can see, the linear regression is showing that the stock price over the period 02-12-2022 to 01-02-2023 has decreased over time and backs up the EDA anaylsis showing the price of the stock has decreased meaning it would have returned less then what you put in.")
+        st.write("For SBUX the accuracy of the data is sitting at around 0.2 which means that it is not that accurate interms of the training data supplied.")
         sbux_linear_regression()
     if symbol_options_menu == "MELI":
+        st.write("As you can see, the linear regression is showing that the stock price over the period 02-12-2022 to 01-02-2023 has increased over time and backs up the EDA anaylsis showing the price of the stock has increased meaning it would have returned more then what you put in.")
+        st.write("For MELI the accuracy of the data is sitting at around 0.5 which means that it may not be the most accurate interms of the training data supplied, the training data is more accurate then SBUX.")
         meli_linear_regression()
     if symbol_options_menu == "BKNG":
+        st.write("As you can see, the linear regression is showing that the stock price over the period 02-12-2022 to 01-02-2023 has increased over time and backs up the EDA anaylsis showing the price of the stock has increased meaning it would have returned more then what you put in.")
+        st.write("For BKNG the accuracy of the data is sitting at around 0.8 which means out of all the training data supplied for each stock, BKNGs is the most accurate.")
         bkng_linear_regression()
     if symbol_options_menu == "CTAS":
+        st.write("As you can see, the linear regression is showing that the stock price over the period 02-12-2022 to 01-02-2023 has increased over time and backs up the EDA anaylsis showing the price of the stock has increased meaning it would have returned more then what you put in.")
+        st.write("For CTAS the accuracy of the data is sitting just below 0.8 at between about 0.77-0.79, meaning that it is the second most accurate interms of the training data supplied.")
         ctas_linear_regression()
 
 if selected == "Prophet":
+    st.title("Overall analysis:")
+    st.write("Overall, prophet is used to 'forecast' future prices for stocks. For each of my stock I chose to show the predicited forecast for the next 365 days. It achieves this by essentially using the real stock price and copying it for the next 365 days, and fashioning it against if the stock has increased or decreased in the period supplied to generate the forecast. For me this poses a real problem and doesn't actually achieve true forecasting due to the fact it is just a copy and paste of the data. This went spectacularly wrong for the CTAS forecasting and lead to a corruption of the outputted data, where the forecasting spiralled downwards and wasn't consitent with the data provided.")
     symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
     if symbol_options_menu == "SBUX":
         st.write("Below is the Prophet Data for SBUX over the next 365 days:")
@@ -899,6 +939,11 @@ if selected == "Buy/Sell":
         thirty_day_sbux_prophet()
         st.write("Between 14-30 days my advice would be to buy SBUX stock. This is because as shown above, the prophet data is showing the stock will increase in price over these days, meaning you will gain money")
 
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Real World Data for SBUX over the last 30 days, from Yahoo Finance:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        st.write("As you can see below, the real world data for the last month shows that SBUX stock has actually decreased -3.22% from the 01-12-2023 to 01-01-2024, compared to the prophet data which also shows an overall decrease in the stock price. So for this one Prophet has been fairly accurate, although I cannot tell the percentage decrease compared to the real world data.")
+        st.image("SBUX-Real-Time-month.png", width=1760)
+
     if symbol_options_menu == "MELI":
         new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for MELI over the next 7 days:</p>'
         st.markdown(new_title, unsafe_allow_html=True)
@@ -914,6 +959,11 @@ if selected == "Buy/Sell":
         st.markdown(new_title, unsafe_allow_html=True)
         thirty_day_meli_prophet()
         st.write("Between 14-30 days my advice would be to sell your MELI stock. This is because as shown above, the prophet data is showing the stock will reduce in price over these days, meaning you will loose money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Real World Data for MELI over the last 30 days, from Yahoo Finance:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        st.write("As you can see below, the real world data for the last month shows that MELI stock has actually decreased -4.87% from the 01-12-2023 to 01-01-2024, compared to the prophet data which also shows an overall decrease in the stock price. So for this one Prophet has been fairly accurate, although I cannot tell the percentage decrease compared to the real world data.")
+        st.image("MELI-Real-Time-month.png", width=1760)
 
     if symbol_options_menu == "BKNG":
         new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for BKNG over the next 7 days:</p>'
@@ -931,6 +981,11 @@ if selected == "Buy/Sell":
         thirty_day_bkng_prophet()
         st.write("Between 14-30 days my advice would be to buy BKNG stock. This is because as shown above, the prophet data is showing the stock will increase in price over these days, meaning you will gain money")
 
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Real World Data for BKNG over the last 30 days, from Yahoo Finance:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        st.write("As you can see below, the real world data for the last month shows that BKNG stock has actually increased 12.27% from the 01-12-2023 to 01-01-2024, compared to the prophet data which shows an overall decrease in the stock price, even though it picked up near the end.")
+        st.image("BKNG-Real-Time-month.png", width=1760)
+
     if symbol_options_menu == "CTAS":
         new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Prophet Data for CTAS over the next 7 days:</p>'
         st.markdown(new_title, unsafe_allow_html=True)
@@ -946,5 +1001,10 @@ if selected == "Buy/Sell":
         st.markdown(new_title, unsafe_allow_html=True)
         thirty_day_ctas_prophet()
         st.write("Between 14-30 days my advice would be to sell your CTAS stock. This is because as shown above, the prophet data is showing the stock will reduce in price over these days, meaning you will loose money")
+
+        new_title = '<p style="font-family:sans-serif; font-size: 30px;">Below is the Real World Data for CTAS over the last 30 days, from Yahoo Finance:</p>'
+        st.markdown(new_title, unsafe_allow_html=True)
+        st.write("As you can see below, the real world data for the last month shows that CTAS stock has actually increased 7.60% from the 01-12-2023 to 01-01-2024, compared to the prophet data which shows a dramatic decrease in the stock price.")
+        st.image("CTAS-Real-Time-month.png", width=1760)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
