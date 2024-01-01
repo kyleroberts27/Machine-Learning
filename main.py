@@ -164,7 +164,7 @@ def lstm_stocks(chosen_stock):
 
     history = model.fit(
         X_train, Y_train,
-        epochs=150,
+        epochs=30,
         batch_size=16,
         validation_split=0.1,
         verbose=1,
@@ -704,6 +704,26 @@ def thirty_day_ctas_prophet():
     # bkng_lstm()
     # ctas_lstm()
 
+@st.cache_resource
+def load_sbux_lstm():
+    sbux_lstm()
+
+
+@st.cache_resource
+def load_meli_lstm():
+    meli_lstm()
+
+
+@st.cache_resource
+def load_bkng_lstm():
+    bkng_lstm()
+
+
+@st.cache_resource
+def load_ctas_lstm():
+    ctas_lstm()
+
+
 st.set_page_config(layout="wide")
 
 selected = option_menu(
@@ -716,7 +736,7 @@ selected = option_menu(
     styles={
         "container": {"padding": "0!important", "background-color": "#fafafa"},
         "icon": {"color": "blue", "font-size": "20px"},
-        "nav-link": {"font-size": "20px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
+        "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px", "--hover-color": "#eee"},
         "nav-link-selected": {"background-color": "#89cff0"},
     }
 
@@ -724,6 +744,7 @@ selected = option_menu(
 
 if selected == "Home":
     st.title("COM624 - Kyle Roberts Software Solution")
+    st.write("Student Number: 16291981")
     st.write("Within this application is my solution to the tasks proposed within the assessment brief")
     st.write("My chosen stocks are:")
     col1, col2 = st.columns([1,17])
@@ -796,12 +817,20 @@ if selected == "Clusters":
 if selected == "EDA Analysis":
     symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
     if symbol_options_menu == "SBUX":
+        st.write("As you can see below, between 02-12-2022 to 01-12-2023 SBUX has returned -5.57% meaning that if you put money into SBUX a year ago and held, your return would be less then what you put in. Compare this to XEL (SBUX's most postiviely correlated stock), which has a return of -11.15%. If you invested the same amount, you would be better off investing in SBUX as opposed to XEL.")
+        st.write("However, over the past year, the NASDAQ 100 as whole, has returned just over 45%.")
+        st.write("However, if you look a bit deeper in to SBUX's dramatic drop, which from June 2022, has dropped 9.5%, analysts believe are pointing to slowing credit card data at the company as a sign of falling sales as the SBUX stock is dependent on consumer trends. This could be due to cost of living crisis gripping the USA causing customers to spend less on luxuries such as coffee with their average coffee price sitting at around £3.25.")
         sbux_eda_analysis_stocks()
     if symbol_options_menu == "MELI":
+        st.write("As you can see below, between 02-12-2022 to 01-12-2023 MELI has returned 74.80% meaning that it even out performed the NASDAQ 100 as whole which, has returned just over 45% in the same period. This means that if you put £1,000 into MELI a year ago and held, your return would be get almost £1,750 meaning you would gain near to £750. Compare this to BKNG (MELI's most postiviely correlated stock), which has a return of 51.51%. If you invested the same amount, you would be better off investing in MELI as opposed to BKNG, which has almost a 24% gain on BKNG.")
+        st.write("Despite the global financial crisis and market volatility, MELI's value has increased dramatically. MELI's resilience in the face of competition and challenging economic conditions in Argentina is noteworthy. This could be due to the company choice to diversify into FinTech services, leveraging its e-commerce network to offer high-interest accounts, particularly in inflation-prone Argentina. This strategy has not only helped MELI withstand economic challenges but also solidified its market position. With a recent presedential election in Argentina and Javier Milei victory. He has promised to dollarise the economy and implement business-friendly policies. These developments could impact MELI's operations and stock value in the future, potentially favorably. However, this is all dependent on if Milei's policies are successfully implemented.")
         meli_eda_analysis_stocks()
     if symbol_options_menu == "BKNG":
+        st.write("As you can see below, between 02-12-2022 to 01-12-2023 BKNG has returned 51.51% meaning that it also out performed the NASDAQ 100 as whole which, has returned just over 45% in the same period. This means that if you put money into BKNG a year ago and held, you would see great returns. Compare this to MAR (BKNG's most postiviely correlated stock), which has a return of 26.35%. If you invested the same amount, you would be better off investing in BKNG as opposed to MAR, with BKNG being at almost doubling its gain compared to MAR.")
+        st.write("To explain why the BKNG stock is hitting highs is mainly down to BKNG's record profitability, meaning that travel demand is still high. BKNG makes it money because travellers use it services to; book flights, rent cars, reserve hotels. Paying the majority upfront. Not only this but in the first half of 2023, its total revenue was up 32% from the comparable period of 2022. By comparison, marketing expenses were only up by 15%. One final consideration is because the company spent $5.2 billion in the first half of the year repurchasing shares, this then forces its earnings per share up because its total number of shares outstanding is down.")
         bkng_eda_analysis_stocks()
     if symbol_options_menu == "CTAS":
+        st.write("As you can see below, between 02-12-2022 to 01-12-2023 CTAS has returned 20.69% meaning that it even though it may not have out performed the NASDAQ 100 as whole which, has returned just over 45% in the same period. This means you would make just under half the returns compared to the NASDAQ 100. However, it still means that if you put money into CTAS a year ago and held, you would see good returns. Compare this to ADBE (CTAS's most postiviely correlated stock), which has a return of 32.41%. Meaning if you invested the same amount, you would be better off investing in ADBE as opposed to CTAS, with ADBE returning more when compared to CTAS.")
         ctas_eda_analysis_stocks()
 
 if selected == "ARIMA":
@@ -818,13 +847,13 @@ if selected == "ARIMA":
 if selected == "LSTM":
     symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
     if symbol_options_menu == "SBUX":
-        sbux_lstm()
+        load_sbux_lstm()
     if symbol_options_menu == "MELI":
-        meli_lstm()
+        load_meli_lstm()
     if symbol_options_menu == "BKNG":
-        bkng_lstm()
+        load_bkng_lstm()
     if symbol_options_menu == "CTAS":
-        ctas_lstm()
+       load_ctas_lstm()
 
 if selected == "Linear Regression":
     symbol_options_menu = st.selectbox("Choose a stock:", options=chosen_symbol_list)
