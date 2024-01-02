@@ -25,7 +25,7 @@ All the code for the respository is held within the main.py file:
 
 
 # How to Run the Project in PyCharm
-This application uses the open source Python Library [Streamlit](https://streamlit.io/) which is used to rapidly build and load a interactive Webapps for Machine Learning or Data Science. Streamlit also allows for data to be loaded in real time, something which I have used on every page apart from LSTM. This is because, when the model runs to load in the data, it take upwards of 30 seconds to load. 
+This application uses the open source Python Library [Streamlit](https://streamlit.io/) which is used to rapidly build and load a interactive Webapps for Machine Learning or Data Science. Streamlit also allows for data to be loaded in real time, something which I have used on every page apart from LSTM. This is because, when the model runs to load in the data, it takes upwards of 30 seconds to load. 
 
 To get around this, once the user loads the data in for the first time, the displayed data is cached as a resource, as well as a screenshot of a higher epoch for training the Neural Network.
 
