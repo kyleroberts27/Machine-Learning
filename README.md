@@ -45,6 +45,6 @@ For this demonstration I have navigated to EDA Analysis Page:
 
 ![EDA Analysis Page](https://github.com/kyleroberts27/Machine-Learning/assets/115091926/47493c57-87c5-4e42-b06d-a05223390b08)
 
-As you can see, there is a `st.selectbox` drop down, for a user to chose one of the stocks within the list (currently SBUX is selected). This the same for all the pages, apart from 'Home', 'Clusters' and 'Correlation'.
+As you can see, there is a `st.selectbox` drop down, for a user to chose one of the stocks within the list (currently SBUX is selected). This the same for all the pages, apart from 'Home' and 'Clusters'.
 
 
