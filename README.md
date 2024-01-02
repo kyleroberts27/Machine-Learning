@@ -47,4 +47,5 @@ For this demonstration I have navigated to EDA Analysis Page:
 
 As you can see, there is a `st.selectbox` drop down, for a user to chose one of the stocks within the list (currently SBUX is selected). This the same for all the pages, apart from 'Home' and 'Clusters'.
 
+To then close the application and stop its execution the user, within the terminal, clicks `Ctrl + C`.
 
