@@ -248,7 +248,6 @@ def arima_stocks(chosen_stock, stock_symbol):
     rmse = math.sqrt(mean_squared_error(y, predictions))
     st.write('RMSE: ' + str(rmse))
 
-    import matplotlib.pyplot as plt
     plt.figure(figsize=(16, 8))
     plt.plot(chosen_stock.index[-600:], chosen_stock.tail(600), color='green', label='Train Stock Price')
     plt.plot(test_data.index, y, color='blue', label='Real Stock Price')
@@ -258,9 +257,7 @@ def arima_stocks(chosen_stock, stock_symbol):
     plt.ylabel(f'{stock_symbol} Stock Price')
     plt.legend()
     plt.grid(True)
-    #plt.savefig('arima_model.pdf')
     st.pyplot(plt)
-    #plt.show()
 
 
 def sbux_arima():
