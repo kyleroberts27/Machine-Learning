@@ -182,7 +182,18 @@ def lstm_stocks(chosen_stock):
     plt.xlabel('Time Step')
     plt.legend()
     st.pyplot(plt)
-    #plt.show()
+
+    # Evaluation of the predicted results made by the LSTM model, the visualisation shows the historic data and then
+    # presents the future prediction made by the LSTM model for each stock. Finally plot the predicted results
+    fig_prediction = plt.figure(figsize=(10, 8))
+    st.write('Plotting the Predicted Result:')
+    plt.plot(np.arange(0, len(Y_train)), Y_train, 'g', label="history")
+    plt.plot(np.arange(len(Y_train), len(Y_train) + len(Y_test)), Y_test, marker='.', label="true")
+    plt.plot(np.arange(len(Y_train), len(Y_train) + len(Y_test)), y_pred, 'r', label="prediction")
+    plt.ylabel('Value')
+    plt.xlabel('Time Step')
+    plt.legend()
+    st.pyplot(plt)
 
 
 def create_dataset(dataset, time_step=1):
@@ -226,6 +237,7 @@ def arima_stocks(chosen_stock, stock_symbol):
     predictions = list()
     model = sm.tsa.arima.ARIMA(history, order=(1, 1, 1))
     model_fit = model.fit()
+    forecast = model_fit.forecast(steps=30)
     yhat = model_fit.forecast()[0]
     predictions.append(yhat)
     history.append(y[0])
@@ -255,15 +267,15 @@ def arima_stocks(chosen_stock, stock_symbol):
     plt.plot(chosen_stock.index[-600:], chosen_stock.tail(600), color='green', label='Train Stock Price')
     plt.plot(test_data.index, y, color='blue', label='Real Stock Price')
     plt.plot(test_data.index, predictions, color='red', label='Predicted Stock Price')
-    plt.xlim(dt.datetime(2022, 12, 1), dt.datetime(2023, 12, 10))
+    forecast_dates = pd.date_range(start='2023-12-1', periods=31, freq='D')[1:]
+    plt.plot(forecast_dates, forecast, color='orange', label="Forecasted Prices")
     plt.title(f'{stock_symbol} Stock Price Prediction')
     plt.xlabel('Date')
     plt.ylabel(f'{stock_symbol} Stock Price')
     plt.legend()
     plt.grid(True)
+    plt.tight_layout()
     st.pyplot(plt)
-
-
 
 
 def sbux_arima():
@@ -336,8 +348,7 @@ def linear_regression(dates, prices, chosen_stock):
 
     # Plot Predicted VS Actual Data
     plt.plot(xtest, ytest, color='green', linewidth=1, label='Actual Price')  # plotting the initial datapoints
-    plt.plot(xtest, reg.predict(xtest), color='blue', linewidth=3,
-             label='Predicted Price')  # plotting the line made by linear regression
+    plt.plot(xtest, reg.predict(xtest), color='blue', linewidth=3, label='Predicted Price')  # plotting the line made by linear regression
     plt.title(f"Linear Regression {chosen_stock} | Time vs. Price ")
     plt.legend()
     plt.xlabel('Date Integer')
