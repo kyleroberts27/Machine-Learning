@@ -183,8 +183,6 @@ def lstm_stocks(chosen_stock):
     plt.legend()
     st.pyplot(plt)
 
-    # Evaluation of the predicted results made by the LSTM model, the visualisation shows the historic data and then
-    # presents the future prediction made by the LSTM model for each stock. Finally plot the predicted results
     fig_prediction = plt.figure(figsize=(10, 8))
     st.write('Plotting the Predicted Result:')
     plt.plot(np.arange(0, len(Y_train)), Y_train, 'g', label="history")
