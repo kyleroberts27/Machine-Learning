@@ -34,6 +34,9 @@ import math
 import streamlit as st
 from streamlit_option_menu import option_menu
 
+import datetime as dt
+import matplotlib.dates as mdates
+
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
@@ -252,12 +255,15 @@ def arima_stocks(chosen_stock, stock_symbol):
     plt.plot(chosen_stock.index[-600:], chosen_stock.tail(600), color='green', label='Train Stock Price')
     plt.plot(test_data.index, y, color='blue', label='Real Stock Price')
     plt.plot(test_data.index, predictions, color='red', label='Predicted Stock Price')
+    plt.xlim(dt.datetime(2022, 12, 1), dt.datetime(2023, 12, 10))
     plt.title(f'{stock_symbol} Stock Price Prediction')
     plt.xlabel('Date')
     plt.ylabel(f'{stock_symbol} Stock Price')
     plt.legend()
     plt.grid(True)
     st.pyplot(plt)
+
+
 
 
 def sbux_arima():
